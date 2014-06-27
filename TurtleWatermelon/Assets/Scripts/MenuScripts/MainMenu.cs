@@ -38,7 +38,7 @@ public class MainMenu : MonoBehaviour
 			
 			if (GUI.Button (new Rect (450, 220, 100, 60), "Editor")) 
 			{
-                Application.LoadLevel("Editor");
+                //Application.LoadLevel("Editor"); 
 			}
 			
 			if (GUI.Button (new Rect (600, 220, 100, 60), "Exit")) 
