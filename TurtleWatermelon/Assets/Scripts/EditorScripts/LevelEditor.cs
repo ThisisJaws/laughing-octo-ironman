@@ -17,15 +17,18 @@ public class LevelEditor : MonoBehaviour {
     private List<BlockEnum.BlockPropertyItem> m_CurrentBlockProperties = new List<BlockEnum.BlockPropertyItem>();
     private Vector2 m_BlockScrollPosition;
     private Vector2 m_PropertieScrollPosition;
+    private Vector2 m_LevelScrollPosition;
     private Rect m_GUIBoxRectLeft;
     private Rect m_GUIBoxRectRight;
     private string m_SaveFileName = "Level1.txt";
+    private string [] m_LevelsInDIR;
 
 	void Start () 
     {
         m_LevelItems = new GameObject("LevelItems");
         m_GUIBoxRectLeft = new Rect(0, 0, 200, 800);
         m_GameManger = GameManager.Get();
+        m_LevelsInDIR = m_GameManger.ReturnLevelsInDIR();
 	}
 
 	void Update () 
@@ -207,16 +210,24 @@ public class LevelEditor : MonoBehaviour {
         GUI.Box(m_GUIBoxRectRight, "Editor Options");
         GUILayout.BeginArea(m_GUIBoxRectRight);
         GUILayout.Space(30);
-        if (GUILayout.Button("Load Level"))
+        GUILayout.Label("Load Level");
+        m_LevelScrollPosition = GUILayout.BeginScrollView(m_LevelScrollPosition, GUILayout.Width(120), GUILayout.Height(100));
+        foreach (string item in m_LevelsInDIR)
         {
-            m_GameManger.LoadLevelFromFile(m_SaveFileName, m_LevelItems);
+            if (GUILayout.Button(item))
+            {
+                m_GameManger.LoadLevelFromFile(item, m_LevelItems);
+            }
         }
+        GUILayout.EndScrollView();
         GUILayout.Space(20);
-        m_SaveFileName = GUILayout.TextField(m_SaveFileName);
         if (GUILayout.Button("Save Level"))
         {
             m_GameManger.SaveLevelToFile(m_SaveFileName, m_LevelItems);
+            m_LevelsInDIR = m_GameManger.ReturnLevelsInDIR();
         }
+        m_SaveFileName = GUILayout.TextField(m_SaveFileName);
+        
         GUILayout.EndArea();
         
 
