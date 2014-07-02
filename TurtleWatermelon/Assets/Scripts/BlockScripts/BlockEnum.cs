@@ -34,9 +34,8 @@ public class BlockEnum : MonoBehaviour {
         SPEED_BLOCK,
         JUMP_BLOCK,
         DEATH_BLOCK,
-        TURBO_BLOCK,
-        MEGA_BLOCK,
-        GROW_BLOCK,
+        START_BLOCK,
+        END_BLOCK,
 
     }
 
@@ -45,6 +44,6 @@ public class BlockEnum : MonoBehaviour {
         SPEED_MODIFY,
         JUMP_MODIFIY,
         DEATH,
-        JUMP_ACTIVE
+        JUMP_ACTIVE,
     }
 }

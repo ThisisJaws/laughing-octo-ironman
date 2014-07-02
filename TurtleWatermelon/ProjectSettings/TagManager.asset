@@ -5,6 +5,7 @@ TagManager:
   tags:
   - EditorLevelCollider
   - EditorBlock
+  - LevelItems
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX

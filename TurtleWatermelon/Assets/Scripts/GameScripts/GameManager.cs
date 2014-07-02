@@ -12,10 +12,13 @@ public class GameManager : MonoBehaviour {
     public List<BlockEnum.BlockItem> BlockListItems = new List<BlockEnum.BlockItem>();
 
     private static GameManager m_Instance;
+    private GameObject m_LastLoadStart;
+    private GameObject m_LastLoadEnd;
 
     void Start()
     {
         m_Instance = this;
+        DontDestroyOnLoad(this);
     }
 
     public static GameManager Get()
@@ -98,6 +101,15 @@ public class GameManager : MonoBehaviour {
                 {
                     blockPropertys.Propeties.Add(new BlockEnum.BlockPropertyItem((BlockEnum.BlockProperty)int.Parse(lineItems[i]), float.Parse(lineItems[(i + 1)])));
                 }
+
+                if ((BlockEnum.Blocks)int.Parse(lineItems[0]) == BlockEnum.Blocks.START_BLOCK)
+                {
+                    m_LastLoadStart = block;
+                }
+                else if ((BlockEnum.Blocks)int.Parse(lineItems[0]) == BlockEnum.Blocks.END_BLOCK)
+                {
+                    m_LastLoadEnd = block;
+                }
             }
             return true;
         }
@@ -106,6 +118,36 @@ public class GameManager : MonoBehaviour {
             Debug.LogError(e.ToString());
             return false;
         }
+    }
+
+    public void StartLevel(string LevelToLoad)
+    {
+        // call couroutine to load the scene.
+        StartCoroutine(LoadLevel(LevelToLoad));
+    }
+    
+    private IEnumerator LoadLevel(string LevelToLoad)
+    {
+        // open the main scene and wait until it has finesh loading.
+        Application.LoadLevel("Main");
+        while (Application.isLoadingLevel)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        // load all the level items like the map.
+        LoadLevelItems(LevelToLoad);
+
+    }
+
+    private void LoadLevelItems(string LevelToLoad)
+    {
+        // load in the map
+        GameObject levelItems = GameObject.FindGameObjectWithTag("LevelItems");
+        LoadLevelFromFile(LevelToLoad, levelItems);
+
+        // position the player at the start of the map.
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        player.transform.position = new Vector3(m_LastLoadStart.transform.position.x, m_LastLoadStart.transform.position.y + 2, m_LastLoadStart.transform.position.z);
     }
 
     public string[] ReturnLevelsInDIR()

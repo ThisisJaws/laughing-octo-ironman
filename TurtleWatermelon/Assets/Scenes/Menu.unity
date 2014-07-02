@@ -113,9 +113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3469656a0217824a96135bed1e65e6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MenuBox: {fileID: 46014410}
-  MenuCamera: {fileID: 1034347833}
-  NumberOfLevels: 0
+  GameManager: {fileID: 1844367433}
 --- !u!1 &594440539
 GameObject:
   m_ObjectHideFlags: 0
@@ -351,3 +349,55 @@ Transform:
   - {fileID: 1253583137}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!1 &1844367432
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1844367434}
+  - 114: {fileID: 1844367433}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1844367433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1844367432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa3fa87da8d87c1458b40cfebdc0e7aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BlockListItems:
+  - type: 0
+    prefab: {fileID: 100000, guid: d7581bc4625912843b2b4ae12230c1dd, type: 2}
+  - type: 1
+    prefab: {fileID: 100000, guid: b6f9c802ae23d6a489cccf3fc752eb9a, type: 2}
+  - type: 2
+    prefab: {fileID: 100000, guid: d6c278ce498a59e4680f8212cc09d32f, type: 2}
+  - type: 3
+    prefab: {fileID: 100000, guid: bb560abaa2a22fb4088254d6c7715cdb, type: 2}
+  - type: 4
+    prefab: {fileID: 100000, guid: 9896ea597efd46543b9cce250d7d5a62, type: 2}
+  - type: 5
+    prefab: {fileID: 100000, guid: 1548a4f862d9c844faf856d4766a78a8, type: 2}
+--- !u!4 &1844367434
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1844367432}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 8.73707199, y: 10.1905489, z: -4.00171661}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
