@@ -22,6 +22,8 @@ public class LevelEditor : MonoBehaviour {
     private Rect m_GUIBoxRectRight;
     private string m_SaveFileName = "Level1.txt";
     private string [] m_LevelsInDIR;
+    private bool m_ShowErrorGUI;
+    private string m_CurrentErrorMessage;
 
 	void Start () 
     {
@@ -223,14 +225,30 @@ public class LevelEditor : MonoBehaviour {
         GUILayout.Space(20);
         if (GUILayout.Button("Save Level"))
         {
-            m_GameManger.SaveLevelToFile(m_SaveFileName, m_LevelItems);
+            m_GameManger.SaveLevelToFile(m_SaveFileName, m_LevelItems, GUIErrorHandling);
             m_LevelsInDIR = m_GameManger.ReturnLevelsInDIR();
         }
         m_SaveFileName = GUILayout.TextField(m_SaveFileName);
         
         GUILayout.EndArea();
-        
+
+        if (m_ShowErrorGUI)
+        {
+            GUI.Box(new Rect((Screen.width / 2) - 100, (Screen.height / 2) - 50, 200, 100), "ERROR");
+            GUI.Label(new Rect((Screen.width / 2) - 90, (Screen.height / 2) - 25, 200, 100), m_CurrentErrorMessage);
+            if (GUI.Button(new Rect((Screen.width / 2) - 37, (Screen.height / 2),75,50),"OK"))
+            {
+                m_ShowErrorGUI = false;
+                m_CurrentErrorMessage = "";
+            }
+        }
 
 
+    }
+
+    void GUIErrorHandling(string error)
+    {
+        m_CurrentErrorMessage = error;
+        m_ShowErrorGUI = true;
     }
 }

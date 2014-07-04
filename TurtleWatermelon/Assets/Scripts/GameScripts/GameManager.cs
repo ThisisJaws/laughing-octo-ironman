@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour {
         return null;
     }
 
-	public bool SaveLevelToFile(string filename, GameObject ParentObject)
+	public bool SaveLevelToFile(string filename, GameObject ParentObject, Action<string> callback)
     {
         try
         {
@@ -46,6 +46,38 @@ public class GameManager : MonoBehaviour {
             int ItemCounter = 0;
             // get all objects under the parent ( every block in scene )
             BlockPropertyBase[] LevelItems = ParentObject.GetComponentsInChildren<BlockPropertyBase>();
+
+            //check for problems - eg no start and end point
+            int startBlock = 0;
+            int endblock = 0;
+            foreach (BlockPropertyBase item in LevelItems)
+            {
+                if (item.BlockType == BlockEnum.Blocks.START_BLOCK)
+                {
+                    startBlock++;
+                }
+                if (item.BlockType == BlockEnum.Blocks.END_BLOCK)
+                {
+                    endblock++;
+                }
+            }
+
+            if (startBlock == 0 || endblock == 0)
+            {
+                if (callback != null)
+                {
+                    callback("ERROR: No start or end block in level.");
+                }
+                return false;
+            }
+            else if (startBlock > 1 || endblock > 1)
+            {
+                if (callback != null)
+                {
+                    callback("ERROR: To many Start or end blocks in level.");
+                }
+                return false;
+            }
 
             foreach (BlockPropertyBase item in LevelItems)
             {
