@@ -10,16 +10,20 @@ public class MainMenu : MonoBehaviour
         LEVEL_LIST,
         OPTIONS,
     }
-    public GameManager GameManager;
+    
 
 	private Vector2 m_levelScroll;
     private MenuState m_CurrentState;
-    string [] m_LevelsToLoad;
+    private string [] m_LevelsToLoad;
+    private GameManager m_GameManager;
+    private SceneManager m_SceneManager;
 
 	void Start()
 	{
         m_CurrentState = MenuState.MAIN_MENU;
-        m_LevelsToLoad = GameManager.ReturnLevelsInDIR();
+        m_GameManager = GameManager.Get();
+        m_SceneManager = SceneManager.Get();
+        m_LevelsToLoad = m_GameManager.ReturnLevelsInDIR();
 
 	}
 
@@ -43,7 +47,8 @@ public class MainMenu : MonoBehaviour
 			    }
 			    if (GUI.Button (new Rect (boxPosX + 150, boxPosY + 30, 100, 60), "Editor")) 
 			    {
-                    Application.LoadLevel("Editor");
+                    m_SceneManager.OpenScene("Editor", SceneManager.SceneLayer.MAIN);
+                    m_SceneManager.CloseScene("Menu");
 			    }
 			    if (GUI.Button (new Rect (boxPosX + 30, boxPosY + 110, 100, 60), "Options")) 
 			    {
@@ -70,7 +75,7 @@ public class MainMenu : MonoBehaviour
                 {
                     if (GUILayout.Button(item))
                     {
-                        GameManager.StartLevel(item);
+                        m_GameManager.StartLevel(item);
                     }
                 }
                 GUILayout.EndScrollView();

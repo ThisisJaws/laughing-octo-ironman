@@ -8,7 +8,7 @@ using System.Text;
 
 public class GameManager : MonoBehaviour {
 
-
+    public SceneManager SceneManagerComponent;
     public List<BlockEnum.BlockItem> BlockListItems = new List<BlockEnum.BlockItem>();
 
     private static GameManager m_Instance;
@@ -154,23 +154,31 @@ public class GameManager : MonoBehaviour {
 
     public void StartLevel(string LevelToLoad)
     {
-        // call couroutine to load the scene.
-        StartCoroutine(LoadLevel(LevelToLoad));
+        // open loading screen
+        SceneManagerComponent.OpenScene("Loading", SceneManager.SceneLayer.LOADING);
+        // close menu
+        SceneManagerComponent.CloseScene("Menu");
+        // load the scene and wait for the callback on completion to then load the level items.
+        StartCoroutine(LoadLevelDelay(LevelToLoad));
+        //SceneManagerComponent.OpenScene("Main", SceneManager.SceneLayer.MAIN, () =>
+        //{
+        //    LoadLevelItems(LevelToLoad);
+        //}
+        //);
+    }
+
+    // debug to test loading screen, should be no delay
+    IEnumerator LoadLevelDelay(string LevelToLoad)
+    {
+        yield return new WaitForSeconds(2);
+        SceneManagerComponent.OpenScene("Main", SceneManager.SceneLayer.MAIN, () =>
+        {
+            LoadLevelItems(LevelToLoad);
+        }
+       );
+        yield break;
     }
     
-    private IEnumerator LoadLevel(string LevelToLoad)
-    {
-        // open the main scene and wait until it has finesh loading.
-        Application.LoadLevel("Main");
-        while (Application.isLoadingLevel)
-        {
-            yield return new WaitForEndOfFrame();
-        }
-        // load all the level items like the map.
-        LoadLevelItems(LevelToLoad);
-
-    }
-
     private void LoadLevelItems(string LevelToLoad)
     {
         // load in the map
@@ -180,6 +188,7 @@ public class GameManager : MonoBehaviour {
         // position the player at the start of the map.
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         player.transform.position = new Vector3(m_LastLoadStart.transform.position.x, m_LastLoadStart.transform.position.y + 2, m_LastLoadStart.transform.position.z);
+        SceneManagerComponent.CloseScene("Loading");
     }
 
     public string[] ReturnLevelsInDIR()

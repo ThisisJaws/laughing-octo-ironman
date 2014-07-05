@@ -11,3 +11,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Main.unity
   - enabled: 1
     path: Assets/Scenes/Editor.unity
+  - enabled: 1
+    path: Assets/Scenes/Loading.unity
+  - enabled: 1
+    path: Assets/Scenes/Client.unity
+  - enabled: 1
+    path: Assets/Scenes/Options.unity

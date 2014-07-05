@@ -28,6 +28,7 @@ public class LevelEditor : MonoBehaviour {
 	void Start () 
     {
         m_LevelItems = new GameObject("LevelItems");
+        m_LevelItems.transform.parent = transform;
         m_GUIBoxRectLeft = new Rect(0, 0, 200, 800);
         m_GameManger = GameManager.Get();
         m_LevelsInDIR = m_GameManger.ReturnLevelsInDIR();
