@@ -47,7 +47,7 @@ public class MainMenu : MonoBehaviour
 			    }
 			    if (GUI.Button (new Rect (boxPosX + 150, boxPosY + 30, 100, 60), "Editor")) 
 			    {
-                    m_SceneManager.OpenScene("Editor", SceneManager.SceneLayer.MAIN);
+                    m_SceneManager.OpenScene("Editor", SceneManager.SceneLayer.EDITOR);
                     m_SceneManager.CloseScene("Menu");
 			    }
 			    if (GUI.Button (new Rect (boxPosX + 30, boxPosY + 110, 100, 60), "Options")) 

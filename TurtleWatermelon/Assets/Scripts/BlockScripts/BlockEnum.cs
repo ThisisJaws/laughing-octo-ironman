@@ -63,7 +63,6 @@ public class BlockEnum : MonoBehaviour {
     {
         switch (property)
         {
-            case BlockProperty.DEATH:
             case BlockProperty.JUMP_ACTIVE:
                 return BlockAction.PLAYER_ACTION;
 
@@ -73,6 +72,7 @@ public class BlockEnum : MonoBehaviour {
 
             case BlockProperty.START_GAME:
             case BlockProperty.END_GAME:
+            case BlockProperty.DEATH:
             case BlockProperty.RESET_GAME_VALUES:
                 return BlockAction.GAME_ACTION;
             default:

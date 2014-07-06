@@ -9,11 +9,14 @@ public class SceneManager : MonoBehaviour {
     public enum SceneLayer
     {
         MAIN,
+        EDITOR,
         MENU,
+        HUD,
         LOADING,
         RESULTS,
         OPTIONS
     }
+
     class SceneHolderItem
     {
         public SceneHolderItem(SceneLayer _layer, GameObject _gameObject, GameObject _sceneRoot)

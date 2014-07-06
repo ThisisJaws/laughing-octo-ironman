@@ -14,6 +14,13 @@ public class GameManager : MonoBehaviour {
     private static GameManager m_Instance;
     private GameObject m_LastLoadStart;
     private GameObject m_LastLoadEnd;
+    private float m_LevelTime;
+    private bool m_StartedLevel;
+
+    public static GameManager Get()
+    {
+        return m_Instance;
+    }
 
     void Start()
     {
@@ -21,9 +28,22 @@ public class GameManager : MonoBehaviour {
         DontDestroyOnLoad(this);
     }
 
-    public static GameManager Get()
+    void Update()
     {
-        return m_Instance;
+        if (m_StartedLevel)
+        {
+            m_LevelTime += Time.deltaTime;
+        }
+    }
+
+    public float ReturnLevelTime()
+    {
+        return m_LevelTime;
+    }
+
+    public bool ReturnLevelStarted()
+    {
+        return m_StartedLevel;
     }
 
     public GameObject GetPrefabFromType(BlockEnum.Blocks type)
@@ -187,9 +207,11 @@ public class GameManager : MonoBehaviour {
         GameObject levelItems = GameObject.FindGameObjectWithTag("LevelItems");
         LoadLevelFromFile(LevelToLoad, levelItems);
 
+        
+        // open the hud
+        SceneManagerComponent.OpenScene("Hud", SceneManager.SceneLayer.HUD);
         // position the player at the start of the map.
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        player.transform.position = new Vector3(m_LastLoadStart.transform.position.x, m_LastLoadStart.transform.position.y + 2, m_LastLoadStart.transform.position.z);
+        RespawnPlayer();
         SceneManagerComponent.CloseScene("Loading");
     }
 
@@ -202,6 +224,43 @@ public class GameManager : MonoBehaviour {
 
     public void AddGameAction(BlockEnum.BlockPropertyItem action)
     {
-        Debug.Log("Adding Game Action");
+        switch (action.type)
+        {
+            case BlockEnum.BlockProperty.DEATH:
+                RespawnPlayer();
+                break;
+            case BlockEnum.BlockProperty.RESET_GAME_VALUES:
+                ResetLevelValues();
+                break;
+            case BlockEnum.BlockProperty.START_GAME:
+                m_StartedLevel = true;
+                break;
+            case BlockEnum.BlockProperty.END_GAME:
+                EndLevel();
+                break;
+            default:
+                Debug.LogError("Trying to handle a game action with no handler");
+                break;
+
+        }
+    }
+
+    void RespawnPlayer()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        player.transform.position = new Vector3(m_LastLoadStart.transform.position.x, m_LastLoadStart.transform.position.y + 2, m_LastLoadStart.transform.position.z);
+    }
+
+    void ResetLevelValues()
+    {
+        m_LevelTime = 0;
+        m_StartedLevel = false;
+    }
+
+    void EndLevel()
+    {
+        SceneManagerComponent.CloseScene("Main");
+        SceneManagerComponent.CloseScene("Hud");
+        SceneManagerComponent.OpenScene("Menu", SceneManager.SceneLayer.MENU);
     }
 }
