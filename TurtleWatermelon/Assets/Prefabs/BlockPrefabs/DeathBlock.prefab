@@ -13,7 +13,7 @@ GameObject:
   - 23: {fileID: 2300000}
   - 114: {fileID: 11400000}
   m_Layer: 0
-  m_Name: JumpBlock
+  m_Name: DeathBlock
   m_TagString: EditorBlock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,7 +43,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: 1b9b3ede0bfd4c34189d6824772f8df7, type: 2}
+  - {fileID: 2100000, guid: 578f3a5dad17df7419d8920f544a108a, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -78,13 +78,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78391cdaa8dde834a98124cf43654429, type: 3}
+  m_Script: {fileID: 11500000, guid: 1c171e43efdf800499cce5d83889d493, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BlockType: 2
+  BlockType: 3
   Propeties:
-  - type: 1
-    value: .5
+  - type: 2
+    value: 1
+  - type: 5
+    value: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

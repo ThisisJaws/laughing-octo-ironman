@@ -7,13 +7,13 @@ public class LevelEditor : MonoBehaviour {
 
     public GameObject PlaceingPrefab;
     public float BlockSnappingDistance;
+    public GameObject LevelItems;
 
     private GameManager m_GameManger;
     private bool m_PlacingActive = false;
     private GameObject m_PlacingObject = null;
-    private GameObject m_LevelItems = null;
     private BlockEnum.Blocks m_CurrentBlockToPlaceType = BlockEnum.Blocks.NORMAL_BLOCK;
-    private BlockEnum.Blocks m_CurrentBlockPropetieType = BlockEnum.Blocks.JUMP_BLOCK;
+    private BlockEnum.Blocks m_CurrentBlockPropetieType = BlockEnum.Blocks.JUMP_MODIFIER_BLOCK;
     private List<BlockEnum.BlockPropertyItem> m_CurrentBlockProperties = new List<BlockEnum.BlockPropertyItem>();
     private Vector2 m_BlockScrollPosition;
     private Vector2 m_PropertieScrollPosition;
@@ -27,8 +27,6 @@ public class LevelEditor : MonoBehaviour {
 
 	void Start () 
     {
-        m_LevelItems = new GameObject("LevelItems");
-        m_LevelItems.transform.parent = transform;
         m_GUIBoxRectLeft = new Rect(0, 0, 200, 800);
         m_GameManger = GameManager.Get();
         m_LevelsInDIR = m_GameManger.ReturnLevelsInDIR();
@@ -56,7 +54,7 @@ public class LevelEditor : MonoBehaviour {
                         if (hit.transform.tag == "EditorLevelCollider")
                         {
                             m_PlacingObject = GameObject.Instantiate(PlaceingPrefab, new Vector3(hit.point.x, hit.point.y, -(PlaceingPrefab.transform.localScale.z / 2)), Quaternion.identity) as GameObject;
-                            m_PlacingObject.transform.parent = m_LevelItems.transform;
+                            m_PlacingObject.transform.parent = LevelItems.transform;
                             m_PlacingActive = true;
                         }
                     }
@@ -131,14 +129,21 @@ public class LevelEditor : MonoBehaviour {
                 // instantiate the right block, set its parent, and add the current editor propertys onto it.
                 if (m_PlacingObject != null)
                 {
+                    // instantiate object
                     GameObject block = GameObject.Instantiate(m_GameManger.GetPrefabFromType(m_CurrentBlockToPlaceType), m_PlacingObject.transform.position, Quaternion.identity) as GameObject;
-                    block.transform.parent = m_LevelItems.transform;
-                    List<BlockEnum.BlockPropertyItem> propertys = block.GetComponent<BlockPropertyBase>().Propeties;
+                    // set its parent
+                    block.transform.parent = LevelItems.transform;
+                    // set its parent component
+                    BlockPropertyBase blockBase = block.GetComponent<BlockPropertyBase>();
+                    blockBase.SetBlockParentComponent(LevelItems.GetComponent<BlockParent>());
+                    // set all the block propertys
+                    List<BlockEnum.BlockPropertyItem> propertys = blockBase.Propeties;
                     propertys.Clear();
                     foreach (BlockEnum.BlockPropertyItem prop in m_CurrentBlockProperties)
                     {
                         propertys.Add(new BlockEnum.BlockPropertyItem(prop));
                     }
+                    //destroy placing block
                     GameObject.Destroy(m_PlacingObject);
                     m_PlacingObject = null;
                     m_PlacingActive = false;
@@ -185,7 +190,7 @@ public class LevelEditor : MonoBehaviour {
             BlockPropertyBase blockPropertie = blockPrefab.GetComponent<BlockPropertyBase>();
 
             m_CurrentBlockProperties.Clear();
-            List<BlockEnum.BlockPropertyItem> propertys = blockPropertie.GetDefaultPropertieList();
+            List<BlockEnum.BlockPropertyItem> propertys = blockPropertie.GetPropertyList();
             foreach (BlockEnum.BlockPropertyItem prop in propertys)
             {
                 m_CurrentBlockProperties.Add(new BlockEnum.BlockPropertyItem(prop));
@@ -219,14 +224,14 @@ public class LevelEditor : MonoBehaviour {
         {
             if (GUILayout.Button(item))
             {
-                m_GameManger.LoadLevelFromFile(item, m_LevelItems);
+                m_GameManger.LoadLevelFromFile(item, LevelItems);
             }
         }
         GUILayout.EndScrollView();
         GUILayout.Space(20);
         if (GUILayout.Button("Save Level"))
         {
-            m_GameManger.SaveLevelToFile(m_SaveFileName, m_LevelItems, GUIErrorHandling);
+            m_GameManger.SaveLevelToFile(m_SaveFileName, LevelItems, GUIErrorHandling);
             m_LevelsInDIR = m_GameManger.ReturnLevelsInDIR();
         }
         m_SaveFileName = GUILayout.TextField(m_SaveFileName);

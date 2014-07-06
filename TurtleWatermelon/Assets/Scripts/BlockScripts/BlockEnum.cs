@@ -32,10 +32,11 @@ public class BlockEnum : MonoBehaviour {
     {
         NORMAL_BLOCK,
         SPEED_BLOCK,
-        JUMP_BLOCK,
+        JUMP_MODIFIER_BLOCK,
         DEATH_BLOCK,
         START_BLOCK,
         END_BLOCK,
+        JUMP_ACTIVE_BLOCK
 
     }
 
@@ -45,5 +46,37 @@ public class BlockEnum : MonoBehaviour {
         JUMP_MODIFIY,
         DEATH,
         JUMP_ACTIVE,
+        END_GAME,
+        RESET_GAME_VALUES,
+        START_GAME,
+    }
+
+    public enum BlockAction
+    {
+        GAME_ACTION,
+        PLAYER_ACTION,
+        PLAYER_MODIFIER, 
+        UNASSIGNED
+    }
+
+    public static BlockAction PropertyToAction(BlockProperty property)
+    {
+        switch (property)
+        {
+            case BlockProperty.DEATH:
+            case BlockProperty.JUMP_ACTIVE:
+                return BlockAction.PLAYER_ACTION;
+
+            case BlockProperty.JUMP_MODIFIY:
+            case BlockProperty.SPEED_MODIFY:
+                return BlockAction.PLAYER_MODIFIER;
+
+            case BlockProperty.START_GAME:
+            case BlockProperty.END_GAME:
+            case BlockProperty.RESET_GAME_VALUES:
+                return BlockAction.GAME_ACTION;
+            default:
+                return BlockAction.UNASSIGNED;
+        }
     }
 }

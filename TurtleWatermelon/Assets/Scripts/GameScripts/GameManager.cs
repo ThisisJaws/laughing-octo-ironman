@@ -126,6 +126,8 @@ public class GameManager : MonoBehaviour {
                 GameObject block = GameObject.Instantiate(GetPrefabFromType((BlockEnum.Blocks)int.Parse(lineItems[0])), new Vector3(float.Parse(lineItems[1]), float.Parse(lineItems[2]), float.Parse(lineItems[3])), Quaternion.identity) as GameObject;
                 block.transform.parent = ParentObject.transform;
                 BlockPropertyBase blockPropertys = block.GetComponent<BlockPropertyBase>();
+                // set the block parent component
+                blockPropertys.SetBlockParentComponent(ParentObject.GetComponent<BlockParent>());
                 // remove base propertys 
                 blockPropertys.Propeties.Clear();
                 // add on propertys from the file, no error checking.
@@ -196,5 +198,10 @@ public class GameManager : MonoBehaviour {
         // returns the filepaths for each item in the dir with the .lvl extention. 
         // it will then run the getfilename function on it at the same time to just return the name.
         return Directory.GetFiles(Application.dataPath + "\\LevelData", "*.txt").Select(path => Path.GetFileName(path)).ToArray();
+    }
+
+    public void AddGameAction(BlockEnum.BlockPropertyItem action)
+    {
+        Debug.Log("Adding Game Action");
     }
 }

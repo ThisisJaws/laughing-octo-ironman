@@ -37,4 +37,9 @@ public class PlayerController : MonoBehaviour
 		}
 		//////////////////////////////////////
 	}
+
+    public void AddPlayerAction(BlockEnum.BlockPropertyItem action)
+    {
+        Debug.Log("Adding player controller action");
+    }
 }

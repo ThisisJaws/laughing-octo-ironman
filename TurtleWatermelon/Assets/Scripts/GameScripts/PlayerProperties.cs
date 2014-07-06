@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerProperties : MonoBehaviour 
 {
@@ -11,4 +12,6 @@ public class PlayerProperties : MonoBehaviour
 		PLAYER_JUMP_HEIGHT		//how high can the player jump
 
 	}
+
+    public List<BlockEnum.BlockPropertyItem> PropertyModifiers = new List<BlockEnum.BlockPropertyItem>();
 }
